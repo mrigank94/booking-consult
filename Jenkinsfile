@@ -6,6 +6,7 @@ pipeline {
     }
 
     environment {
+        CI=false
         FRONTEND_DIR = 'frontend'
         BACKEND_DIR = 'server'
     }
