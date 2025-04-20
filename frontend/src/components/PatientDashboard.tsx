@@ -109,7 +109,7 @@ const PatientDashboard: React.FC = () => {
         {/* Book Appointment Form */}
         <Paper sx={{ p: 3, mb: 4 }}>
           <Typography variant="h6" gutterBottom>
-            Book New Appointment
+            Book a new Appointment
           </Typography>
           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
             <FormControl sx={{ minWidth: 200 }}>
