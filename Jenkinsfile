@@ -11,6 +11,11 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Clone') {
             steps {
                 git 'https://github.com/mrigank94/booking-consult.git'
