@@ -12,7 +12,7 @@ pipeline {
             }
         }
 
-        stage('Build and Start Services') {
+        stage('Build and start services') {
             steps {
                 script {
                     sh 'docker-compose build'
@@ -21,11 +21,9 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run tests') {
             steps {
-                // Add your test commands here if needed
-                echo 'Running tests...'
-                // e.g., sh 'docker-compose exec backend npm test'
+                echo 'Running tests'
             }
         }
 
@@ -35,13 +33,6 @@ pipeline {
                     sh 'docker-compose down -v'
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            echo 'Cleaning up...'
-            sh 'docker-compose down -v || true'
         }
     }
 }
