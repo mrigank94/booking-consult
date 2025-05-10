@@ -1,14 +1,8 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'Node 18'
-    }
-
     environment {
-        CI=false
-        FRONTEND_DIR = 'frontend'
-        BACKEND_DIR = 'server'
+        COMPOSE_FILE = 'docker-compose.yml'
     }
 
     stages {
@@ -17,53 +11,37 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Clone') {
+
+        stage('Build and Start Services') {
             steps {
-                git 'https://github.com/mrigank94/booking-consult.git'
-            }
-        }
-
-        stage('Install Dependencies') {
-            parallel {
-                stage('Frontend') {
-                    steps {
-                        dir("${env.FRONTEND_DIR}") {
-                            sh 'npm install'
-                        }
-                    }
-                }
-                stage('Backend') {
-                    steps {
-                        dir("${env.FRONTEND_DIR}") {
-                            sh 'npm install'
-                        }
-                    }
-                }
-
-            }
-        }
-
-        stage('Build Frontend') {
-            steps {
-                dir("${env.FRONTEND_DIR}") {
-                    sh 'npm run build'
+                script {
+                    sh 'docker-compose build'
+                    sh 'docker-compose up -d'
                 }
             }
         }
 
-        stage('Deploy') {
+        stage('Run Tests') {
             steps {
-                echo 'Deploy step'
+                // Add your test commands here if needed
+                echo 'Running tests...'
+                // e.g., sh 'docker-compose exec backend npm test'
+            }
+        }
+
+        stage('Teardown') {
+            steps {
+                script {
+                    sh 'docker-compose down -v'
+                }
             }
         }
     }
 
     post {
-        success {
-            echo 'CI/CD pipeline completed successfully!'
-        }
-        failure {
-            echo 'CI/CD failed. Check logs'
+        always {
+            echo 'Cleaning up...'
+            sh 'docker-compose down -v || true'
         }
     }
 }
