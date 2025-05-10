@@ -15,6 +15,7 @@ pipeline {
         stage('Build and start services') {
             steps {
                 script {
+                    export PATH=$PATH:/opt/homebrew/bin
                     sh 'docker-compose build'
                     sh 'docker-compose up -d'
                 }
@@ -30,6 +31,7 @@ pipeline {
         stage('Teardown') {
             steps {
                 script {
+                    export PATH=$PATH:/opt/homebrew/bin
                     sh 'docker-compose down -v'
                 }
             }
